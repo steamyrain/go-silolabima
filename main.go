@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"html"
 	"log"
-	"net/http"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
 
@@ -25,15 +25,16 @@ func init() {
 }
 
 func main() {
-	http.HandleFunc("/signin", Signin)
-	http.HandleFunc("/welcome", Welcome)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	r := gin.Default()
+	r.GET("/signin", Signin)
+	r.GET("/welcome", Welcome)
+	r.Run()
 }
 
-func Signin(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+func Signin(c *gin.Context) {
+	fmt.Fprintf(c.Writer, "Hello, %q", html.EscapeString(c.Request.URL.Path))
 }
 
-func Welcome(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+func Welcome(c *gin.Context) {
+	fmt.Fprintf(c.Writer, "Hello, %q", html.EscapeString(c.Request.URL.Path))
 }
