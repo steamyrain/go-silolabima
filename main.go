@@ -6,12 +6,13 @@ import (
 	"html"
 	"log"
 	"net/http"
+	"os"
 
 	_ "github.com/lib/pq"
 )
 
 func init() {
-	db, err := sql.Open("postgres", "host=localhost port=5432 user=ex password=example dbname=rain sslmode=disable")
+	db, err := sql.Open("postgres", os.Getenv("ALKAL_DB_URI"))
 	if err != nil {
 		log.Fatal(err)
 	}
